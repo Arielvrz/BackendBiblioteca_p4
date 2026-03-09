@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Book;
-use App\Policies\BookPolicy;
+use App\Policies\LibroPolicy;
+use App\Models\Loan;
+use App\Policies\LoanPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::policy(Book::class, BookPolicy::class);
+        Gate::policy(Book::class, LibroPolicy::class);
+        Gate::policy(Loan::class, LoanPolicy::class);
     }
 }

@@ -14,7 +14,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('profile', [AuthController::class, 'profile']);
 
     // Books
-    Route::get('books', [BookController::class, 'index']);
+    Route::apiResource('books', BookController::class);
     Route::get('loans', [LoanController::class, 'index']);
     Route::post('loans', [LoanController::class, 'store']);
     Route::post('loans/{loan}/return', ReturnLoanController::class);

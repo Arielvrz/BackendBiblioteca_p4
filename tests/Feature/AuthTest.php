@@ -33,4 +33,40 @@ class AuthTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
     }
+
+    public function test_it_cannot_login_with_invalid_credentials()
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt('test1234'),
+        ]);
+
+        $response = $this->postJson('/api/v1/login', [
+            'email' => $user->email,
+            'password' => 'wrongpassword',
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    public function test_it_can_logout()
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+                         ->postJson('/api/v1/logout');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_it_can_view_profile()
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+                         ->getJson('/api/v1/profile');
+
+        $response->assertStatus(200);
+    }
 }
